@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>E-Waste Image Classifier</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; background: #f0f0f0; }
+    .container { background: white; padding: 30px; max-width: 800px; margin: auto; border-radius: 12px; }
+    input[type="file"], input[type="submit"] { margin: 15px; }
+    img { max-width: 300px; border-radius: 10px; margin: 20px; }
+    .confidence-bar { background: #eee; border-radius: 20px; width: 80%; margin: auto; }
+    .confidence-fill { height: 20px; background: #4caf50; text-align: center; color: white; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🔍 E-Waste Image Classifier</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required><br>
+    <input type="submit" value="Classify Image">
+  </form>
+  {% if image_url %}
+    <img src="{{ image_url }}" alt="Uploaded Image">
+  {% endif %}
+  {% if prediction %}
+    <h2>Prediction: {{ prediction }}</h2>
+    <div class="confidence-bar">
+      <div class="confidence-fill" style="width: {{ confidence | round(0) }}%">{{ confidence | round(2) }}%</div>
+    </div>
+    <h3>Top 3 Predictions:</h3>
+    <ul>
+      {% for label, conf in top_preds %}
+        <li>{{ label }}: {{ conf | round(2) }}%</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+</body>
+</html>
